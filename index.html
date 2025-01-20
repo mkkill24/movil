@@ -1,366 +1,135 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FPS Game</title>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego con Controles Táctiles</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
 
-    canvas {
-      display: block;
-    }
+        canvas {
+            display: block;
+            background: #333;
+        }
 
-    #startScreen {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 36px;
-      color: skyblue;
-      font-weight: bold;
-      display: block;
-      text-align: center;
-      background-image: url('fondo.jpg');
-      background-size: cover;
-      width: 84%;
-      height: 84%;
-    }
+        .controls {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
 
-    #startButton {
-      margin-top: 20px;
-      padding: 15px 30px;
-      font-size: 24px;
-      color: white;
-      background-color: green;
-      border: none;
-      cursor: pointer;
-      border-radius: 10px;
-    }
+        .controls button {
+            width: 60px;
+            height: 60px;
+            background: #555;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 4px #222;
+            cursor: pointer;
+        }
 
-    #startButton:hover {
-      background-color: darkgreen;
-    }
-
-    #gameOver {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 48px;
-      color: red;
-      font-weight: bold;
-      display: none;
-    }
-
-    #victory {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 48px;
-      color: green;
-      font-weight: bold;
-      display: none;
-    }
-
-    #score {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      font-size: 24px;
-      color: white;
-      font-weight: bold;
-    }
-
-    #timer {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 24px;
-      color: white;
-      font-weight: bold;
-    }
-  </style>
+        .controls button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px #222;
+        }
+    </style>
 </head>
 <body>
-  <canvas id="gameCanvas"></canvas>
-  <div id="gameOver">Noob.</div>
-  <div id="victory">¡Victoria!</div>
-  <div id="startScreen">
-    <button id="startButton">start</button>
-  </div>
-  <div id="score">Puntaje: 0</div>
-  <div id="timer">Tiempo: 05:00</div>
+    <canvas id="gameCanvas"></canvas>
 
-  <script>
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-    const gameOverText = document.getElementById('gameOver');
-    const victoryText = document.getElementById('victory');
-    const startScreen = document.getElementById('startScreen');
-    const startButton = document.getElementById('startButton');
-    const scoreDisplay = document.getElementById('score');
-    const timerDisplay = document.getElementById('timer');
+    <div class="controls">
+        <button id="left">⬅️</button>
+        <button id="jump">⬆️</button>
+        <button id="right">➡️</button>
+        <button id="shoot">🔫</button>
+    </div>
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
 
-    const backgroundImage = new Image();
-    backgroundImage.src = 'b.jpg';
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-    const playerImage = new Image();
-    playerImage.src = 'prota.jpg';
+        let player = {
+            x: canvas.width / 2,
+            y: canvas.height - 100,
+            width: 50,
+            height: 50,
+            color: 'red',
+            speed: 5,
+            jumping: false,
+            jumpStrength: 15,
+            velocityY: 0,
+            gravity: 0.8
+        };
 
-    const obstacleImage = new Image();
-    obstacleImage.src = 'c.jpg';
+        let keys = {
+            left: false,
+            right: false,
+            jump: false,
+            shoot: false
+        };
 
-    const grassImage = new Image();
-    grassImage.src = 'pasto.png';
+        function update() {
+            // Movimiento lateral
+            if (keys.left) player.x -= player.speed;
+            if (keys.right) player.x += player.speed;
 
-  const cubeImage = new Image();
-  cubeImage.src = 'gh.jpg';
+            // Límite de la pantalla
+            player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
 
-    let player = {
-      x: canvas.width / 2 - 25,
-      y: canvas.height - 250,
-      width: 50,
-      height: 50,
-      speed: 5,
-      velocityY: 0,
-      gravity: 0.8,
-      jumpPower: -15,
-      grounded: false,
-      fireballs: [],
-      fireballSpeed: 5,
-      fireballCadence: 0.05,
-      lastFireTime: 0,
-      health: 3,
-      score: 0
-    };
+            // Saltar
+            if (keys.jump && !player.jumping) {
+                player.jumping = true;
+                player.velocityY = -player.jumpStrength;
+            }
 
-    let obstacle = {
-      x: canvas.width / 2 - 75,
-      y: canvas.height - 180,
-      width: 150,
-      height: 100
-    };
+            // Física de gravedad
+            player.velocityY += player.gravity;
+            player.y += player.velocityY;
 
-    let grass = {
-      x: canvas.width - 200,
-      y: canvas.height - 160,
-      width: 100,
-      height: 80
-    };
+            // Detener salto al tocar el suelo
+            if (player.y > canvas.height - player.height) {
+                player.y = canvas.height - player.height;
+                player.jumping = false;
+                player.velocityY = 0;
+            }
 
-    let cubes = [
-      { x: 100, y: 100, width: 50, height: 50, speed: 3, direction: 1 },
-      { x: 300, y: 100, width: 50, height: 50, speed: 5, direction: 1 },
-      { x: 500, y: 100, width: 50, height: 50, speed: 2, direction: -1 }
-    ];
-
-    let timeLeft = 300;
-    function drawBackground() {
-      ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-    }
-
-    function drawPlayer() {
-      ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
-    }
-
-    function drawObstacle() {
-      ctx.drawImage(obstacleImage, obstacle.x, obstacle.y, obstacle.width, obstacle.height);
-    }
-
-    function drawGrass() {
-      ctx.drawImage(grassImage, grass.x, grass.y, grass.width, grass.height);
-    }
-
-    function drawPlayerFireballs() {
-      for (let i = 0; i < player.fireballs.length; i++) {
-        ctx.beginPath();
-        ctx.arc(player.fireballs[i].x, player.fireballs[i].y, 10, 0, Math.PI * 2);
-        ctx.fillStyle = "orange";
-        ctx.fill();
-        ctx.closePath();
-      }
-    }
- 
-    function drawCubes() {
-      for (let i = 0; i < cubes.length; i++) {
-        ctx.drawImage(cubeImage, cubes[i].x, cubes[i].y, cubes[i].width, cubes[i].height);
-      }
-    }
-
-    function moveCubes() {
-      for (let i = 0; i < cubes.length; i++) {
-        cubes[i].x += cubes[i].speed * cubes[i].direction;
-
-        if (cubes[i].x <= 0 || cubes[i].x + cubes[i].width >= canvas.width) {
-          cubes[i].direction *= -1;
-        }
-      }
-    }
-
-    function movePlayer() {
-      let normalSpeed = player.speed;
-
-      if (player.x < grass.x + grass.width &&
-        player.x + player.width > grass.x &&
-        player.y < grass.y + grass.height &&
-        player.y + player.height > grass.y) {
-        normalSpeed = 2;
-      }
-
-      if (keys['a'] && player.x > 0) {
-        player.x -= normalSpeed;
-      }
-
-      if (keys['d'] && player.x < canvas.width - player.width) {
-        player.x += normalSpeed;
-      }
-
-      if (keys[' ']) {
-        if (player.grounded) {
-          player.velocityY = player.jumpPower;
-          player.grounded = false;
-        }
-      }
-
-      player.velocityY += player.gravity;
-      player.y += player.velocityY;
-
-      if (player.y >= canvas.height - 150) {
-        player.y = canvas.height - 150;
-        player.velocityY = 0;
-        player.grounded = true;
-      }
-
-      if (player.x < obstacle.x + obstacle.width &&
-        player.x + player.width > obstacle.x &&
-        player.y < obstacle.y + obstacle.height &&
-        player.y + player.height > obstacle.y) {
-        if (player.y + player.height <= obstacle.y + obstacle.height) {
-          player.y = obstacle.y - player.height;
-          player.velocityY = 0;
-          player.grounded = true;
-        } else {
-          if (keys['d']) {
-            player.x = obstacle.x - player.width;
-          }
-          if (keys['a']) {
-            player.x = obstacle.x + obstacle.width;
-          }
-        }
-      }
-    }
-
-    function shootFireball() {
-      let currentTime = Date.now();
-      if (currentTime - player.lastFireTime > 100) { 
-        player.fireballs.push({
-          x: player.x + player.width / 2,
-          y: player.y,
-          speed: player.fireballSpeed
-        });
-        player.lastFireTime = currentTime;
-      }
-    }
-
-    function moveFireballs() {
-      for (let i = 0; i < player.fireballs.length; i++) {
-        player.fireballs[i].y -= player.fireballSpeed;
-
-        if (player.fireballs[i].y < 0) {
-          player.fireballs.splice(i, 1);
-        }
-      }
-    }
-
-    let keys = {};
-
-    window.addEventListener('keydown', function(e) {
-      keys[e.key] = true;
-
-      if (e.key === ' ') {
-        shootFireball(); 
-      }
-    });
-
-    window.addEventListener('keyup', function(e) {
-      keys[e.key] = false;
-    });
-
-    function checkCollisions() {
-      for (let i = 0; i < player.fireballs.length; i++) {
-        for (let j = 0; j < cubes.length; j++) {
-          if (player.fireballs[i].x < cubes[j].x + cubes[j].width &&
-            player.fireballs[i].x + 10 > cubes[j].x &&
-            player.fireballs[i].y < cubes[j].y + cubes[j].height &&
-            player.fireballs[i].y + 10 > cubes[j].y) {
-
-            cubes.splice(j, 1); 
-            player.fireballs.splice(i, 1);  
-            player.score += 10;
-            scoreDisplay.textContent = "Puntaje: " + player.score;
-
-            generateCube();  
-            break; 
-          }
-        }
-      }
-
-      if (player.score >= 2000) {
-        victoryText.style.display = 'block';
-        clearInterval(gameInterval); 
-      }
-    }
-
-    function generateCube() {
-      const newCube = {
-        x: Math.random() * (canvas.width - 50),
-        y: Math.random() * (canvas.height - 150),
-        width: 50,
-        height: 50,
-        speed: Math.random() * 3 + 1,  
-        direction: Math.random() > 0.5 ? 1 : -1
-      };
-      cubes.push(newCube);
-    }
-
-    function startGame() {
-      startScreen.style.display = 'none';
-      let startTime = Date.now();
-
-      const gameInterval = setInterval(function() {
-        let elapsedTime = Math.floor((Date.now() - startTime) / 1000);
-        let remainingTime = 300 - elapsedTime;
-        let minutes = Math.floor(remainingTime / 60);
-        let seconds = remainingTime % 60;
-        timerDisplay.textContent = `Tiempo: ${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-
-        if (remainingTime <= 0) {
-          gameOverText.style.display = 'block';
-          clearInterval(gameInterval);
+            draw();
+            requestAnimationFrame(update);
         }
 
-        drawBackground();
-        moveCubes();
-        movePlayer();
-        moveFireballs();
-        checkCollisions();
-        drawPlayer();
-        drawObstacle();
-        drawGrass();
-        drawPlayerFireballs();
-        drawCubes();
-      }, 1000 / 60); 
-    }
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    startButton.addEventListener('click', startGame);
-  </script>
+            // Dibujar al jugador
+            ctx.fillStyle = player.color;
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+        }
+
+        // Asignar controles táctiles
+        document.getElementById('left').addEventListener('touchstart', () => keys.left = true);
+        document.getElementById('left').addEventListener('touchend', () => keys.left = false);
+
+        document.getElementById('right').addEventListener('touchstart', () => keys.right = true);
+        document.getElementById('right').addEventListener('touchend', () => keys.right = false);
+
+        document.getElementById('jump').addEventListener('touchstart', () => keys.jump = true);
+        document.getElementById('jump').addEventListener('touchend', () => keys.jump = false);
+
+        document.getElementById('shoot').addEventListener('touchstart', () => keys.shoot = true);
+        document.getElementById('shoot').addEventListener('touchend', () => keys.shoot = false);
+
+        update();
+    </script>
 </body>
 </html>
