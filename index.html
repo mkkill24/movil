@@ -1,173 +1,164 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Juego en Pantalla Completa</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            background-color: #00bcd4; /* Fondo en color turquesa */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juego Táctil</title>
+  <style>
+    /* CSS */
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #222;
+    }
 
-        .game-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: #111;
+    }
 
-        .game-area {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    #controls {
+      position: absolute;
+      bottom: 10%;
+      display: flex;
+      justify-content: space-evenly;
+      width: 100%;
+      z-index: 10;
+    }
 
-        .game-elements {
-            position: absolute;
-            bottom: 20px;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 15px;
-        }
+    .control-btn {
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      padding: 15px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
 
-        .game-buttons {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-        }
+    .control-btn:hover {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
 
-        .button {
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            color: white;
-            border-radius: 5px;
-            font-size: 18px;
-            cursor: pointer;
-        }
+    @media (orientation: landscape) {
+      #controls {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 20px;
+      }
 
-        .score {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 24px;
-            color: white;
-            font-weight: bold;
-        }
-    </style>
+      .control-btn {
+        font-size: 5vw;
+        width: 20vw;
+        height: 10vh;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="game-container">
-        <div class="game-area">
-            <img src="fondo.jpg" alt="Fondo del juego" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;">
-            <div class="score">Puntaje: 10</div>
+  <canvas id="gameCanvas"></canvas>
 
-            <!-- Personaje principal (prota.jpg) -->
-            <img src="prota.jpg" alt="Personaje principal" id="player" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 50px;">
+  <div id="controls">
+    <button id="moveLeft" class="control-btn">Izquierda</button>
+    <button id="moveRight" class="control-btn">Derecha</button>
+    <button id="jump" class="control-btn">Saltar</button>
+    <button id="shoot" class="control-btn">Disparar</button>
+  </div>
 
-            <!-- Elementos que se pueden disparar -->
-            <img src="gh.jpg" alt="Enemigo" class="enemy" style="position: absolute; bottom: 30px; left: 100%; transform: translateX(-50%); width: 50px;">
+  <script>
+    // JavaScript
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
 
-            <!-- Botones de control -->
-            <div class="game-buttons">
-                <div class="button" id="leftButton">←</div>
-                <div class="button" id="rightButton">→</div>
-                <div class="button" id="shootButton">🎯</div>
-            </div>
-        </div>
-    </div>
+    // Variables de jugador y controles
+    let player = { x: canvas.width / 2, y: canvas.height - 100, width: 50, height: 50 };
+    let movingLeft = false, movingRight = false, jumping = false, shooting = false;
 
-    <script>
-        const player = document.getElementById("player");
-        const scoreElement = document.querySelector(".score");
-        const leftButton = document.getElementById("leftButton");
-        const rightButton = document.getElementById("rightButton");
-        const shootButton = document.getElementById("shootButton");
+    // Actualizar el tamaño del canvas al redimensionarlo
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
 
-        let score = 0;
-        let playerPosition = 50;
+    // Mover al jugador
+    function movePlayer() {
+      if (movingLeft && player.x > 0) {
+        player.x -= 5;
+      }
+      if (movingRight && player.x + player.width < canvas.width) {
+        player.x += 5;
+      }
+    }
 
-        // Movimiento hacia la izquierda
-        leftButton.addEventListener("click", () => {
-            if (playerPosition > 5) {
-                playerPosition -= 5;
-                player.style.left = `${playerPosition}%`;
-            }
-        });
+    // Disparar
+    function shoot() {
+      if (shooting) {
+        // Aquí se puede agregar la lógica para disparar
+        console.log('Disparando');
+      }
+    }
 
-        // Movimiento hacia la derecha
-        rightButton.addEventListener("click", () => {
-            if (playerPosition < 95) {
-                playerPosition += 5;
-                player.style.left = `${playerPosition}%`;
-            }
-        });
+    // Dibujar jugador
+    function drawPlayer() {
+      ctx.fillStyle = 'red';
+      ctx.fillRect(player.x, player.y, player.width, player.height);
+    }
 
-        // Disparo
-        shootButton.addEventListener("click", () => {
-            let shot = document.createElement("div");
-            shot.style.position = "absolute";
-            shot.style.left = `${playerPosition}%`;
-            shot.style.bottom = "60px";
-            shot.style.width = "5px";
-            shot.style.height = "15px";
-            shot.style.backgroundColor = "red";
-            document.querySelector(".game-area").appendChild(shot);
+    // Detectar toques en la pantalla
+    function touchHandler(event) {
+      const touchX = event.changedTouches[0].clientX;
+      const touchY = event.changedTouches[0].clientY;
 
-            let shotInterval = setInterval(() => {
-                let shotPosition = parseInt(shot.style.bottom);
-                if (shotPosition > window.innerHeight) {
-                    clearInterval(shotInterval);
-                    shot.remove();
-                } else {
-                    shot.style.bottom = `${shotPosition + 10}px`;
-                }
-            }, 20);
-        });
-
-        // Función de actualización del puntaje
-        function updateScore() {
-            scoreElement.textContent = `Puntaje: ${score}`;
+      if (touchY > canvas.height * 0.7) {
+        if (touchX < canvas.width / 2) {
+          movingLeft = true;
+          movingRight = false;
+        } else {
+          movingRight = true;
+          movingLeft = false;
         }
+      } else if (touchY < canvas.height * 0.3) {
+        jumping = true;
+        console.log('Saltar');
+      }
 
-        // Generación aleatoria de enemigos
-        function spawnEnemy() {
-            const enemy = document.createElement("img");
-            enemy.src = "gh.jpg";
-            enemy.alt = "Enemigo";
-            enemy.style.position = "absolute";
-            enemy.style.bottom = `${Math.random() * 100 + 20}px`;
-            enemy.style.left = `${Math.random() * 100}%`;
-            enemy.classList.add("enemy");
-            document.querySelector(".game-area").appendChild(enemy);
+      if (touchY > canvas.height * 0.8) {
+        shooting = true;
+      }
+    }
 
-            setInterval(() => {
-                let enemyPosition = parseInt(enemy.style.bottom);
-                if (enemyPosition <= 0) {
-                    enemy.remove();
-                    score += 10;
-                    updateScore();
-                } else {
-                    enemy.style.bottom = `${enemyPosition - 2}px`;
-                }
-            }, 30);
-        }
+    function touchEndHandler(event) {
+      movingLeft = false;
+      movingRight = false;
+      jumping = false;
+      shooting = false;
+    }
 
-        // Generar enemigos cada 2 segundos
-        setInterval(spawnEnemy, 2000);
-    </script>
+    // Configurar eventos táctiles
+    canvas.addEventListener('touchstart', touchHandler);
+    canvas.addEventListener('touchend', touchEndHandler);
+
+    // Función de actualización del juego
+    function updateGame() {
+      movePlayer();
+      shoot();
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpiar el canvas
+      drawPlayer(); // Dibujar al jugador
+      requestAnimationFrame(updateGame); // Llamar nuevamente a la función para mantener el juego en ejecución
+    }
+
+    // Redimensionar canvas al cambiar el tamaño de la ventana
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas(); // Inicializar el tamaño del canvas
+
+    updateGame(); // Iniciar el juego
+  </script>
 </body>
 </html>
