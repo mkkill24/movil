@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proximamente - Monte-Movies</title>
+    <style>
+        body {
+            background-image: url('p.jpg'); 
+            background-size: cover; 
+            background-position: center; 
+            background-attachment: fixed; 
+            font-family: Arial, sans-serif;
+            color: #fff;
+            margin: 0;
+            padding-top: 60px;
+            text-align: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+        .star {
+            position: absolute;
+            border-radius: 50%;
+            background-color: #fff;
+            opacity: 0.8;
+            animation: starAnimation 2s linear infinite;
+        }
+        @keyframes starAnimation {
+            0% {
+                transform: translateY(-100px) scale(0.5);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) scale(1.5);
+                opacity: 0;
+            }
+        }
+        .navbar {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center; 
+            padding: 30px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #4a6572;
+            border-radius: 5px;
+        }
+        h1 {
+            color: #fff; 
+            font-size: 2.5em;
+            margin-top: 20px;
+            animation: fadeIn 2s ease-in-out;
+        }
+        .movie-list {
+            margin-top: 30px;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #f4f9f9;
+            border: 2px solid #00cfff; 
+            border-radius: 15px; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 3s ease-in-out;
+            max-height: 400px; 
+            overflow-y: auto; 
+        }
+        .movie-item {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #2d4059;
+        }
+        .movie-item img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @media (max-width: 768px) {
+            .navbar {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .navbar a {
+                padding: 8px 10px;
+                font-size: 0.9em;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .movie-list {
+                padding: 15px;
+                max-height: unset;
+            }
+            .movie-item {
+                margin-bottom: 15px;
+            }
+        }
+        @media (max-width: 480px) {
+            .navbar .left-img, .navbar .right-img {
+                width: 30px;
+                height: 30px;
+            }
+            .navbar a {
+                padding: 5px;
+                font-size: 0.8em;
+            }
+            .movie-item img {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div>
+            <a href="inicio.php">Inicio</a>
+            <a href="categoria T.php">Categoría</a>
+            <a href="redes.php">Redes</a>
+            <a href="ubicacion.php">Ubicación</a>
+            <a href="Lista.php">Próximamente</a>
+            <a href="trailers.php">Trailers</a>
+            <a href="registros.php">Registros</a>
+            <a href="login.php">Inicio de sesión</a>
+            <a href="login_cierre.php">Cerrar sesión</a>
+        </div>
+    </div>
+    <h1>Próximamente</h1>
+    <div class="movie-list">
+        <div class="movie-item">
+            Halloween Ends
+            <img src="p1.jpg" alt="Halloween Ends">
+        </div>
+        <div class="movie-item">
+            Dragon Ball Super: Super Hero
+            <img src="p2.jpg" alt="Dragon Ball Super: Super Hero">
+        </div>
+        <div class="movie-item">
+            Sonic The Hedgehog 3
+            <img src="p3.jpg" alt="Sonic The Hedgehog 3">
+        </div>
+        <div class="movie-item">
+            <img src="p4.jpg" alt="Minecraft Movie Edition">
+            <div>Minecraft Movie Edition</div>
+        </div>
+        <div class="movie-item">
+            Jurassic World Rebirth
+            <img src="p5.png" alt="Jurassic World Rebirth">
+        </div>
+    </div>
+</body>
+</html>

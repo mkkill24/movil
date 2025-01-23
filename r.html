@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redes - Monte-Movies</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            height: 100%;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            margin: 0;
+            padding-top: 60px;
+            text-align: center;
+            overflow: auto;
+            background-image: url('Rs.jpg'); 
+            background-size: cover;  
+            background-position: center; 
+            background-attachment: fixed; 
+        }
+        .navbar {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            padding: 30px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        .navbar div {
+            display: flex;
+            justify-content: center; 
+            align-items: center;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;  
+            margin: 0 5px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #4a6572;
+            border-radius: 5px;
+        }
+        h2 {
+            color: #2d4059;
+            font-size: 2em;
+            margin-top: 20px;
+        }
+        #publicaciones {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            color: #fff;
+            text-align: left;
+            border: 3px solid #00bfff; 
+            opacity: 0;
+            animation: slideIn 1s forwards;
+        }
+        @keyframes slideIn {
+            0% {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .post {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+        .post h3 {
+            font-size: 1.5em;
+            color: #4a6572;
+        }
+        .post p {
+            font-size: 1.1em;
+        }
+        .post a {
+            color: #4a6572;
+            text-decoration: none;
+        }
+        .post a:hover {
+            text-decoration: underline;
+        }
+        .post img {
+            max-width: 100%;
+            display: block;
+            margin: 10px auto; 
+            border-radius: 8px; 
+        }
+        .loading {
+            font-size: 1.5em;
+            color: #4a6572;
+        }
+        #verVideoBtn {
+            background-color: #00bfff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: background-color 0.3s;
+        }
+        #verVideoBtn:hover {
+            background-color: #007bbf;
+        }
+        #videos {
+            display: none;
+            margin-top: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 15px;
+        }
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 20px 10px;
+            }
+            .navbar img {
+                height: 30px;
+            }
+            .navbar a {
+                margin: 10px 0;
+            }
+            h2 {
+                font-size: 1.8em;
+            }
+            #publicaciones {
+                padding: 15px;
+            }
+            #verVideoBtn {
+                padding: 8px 16px;
+                font-size: 1em;
+            }
+            .post h3 {
+                font-size: 1.2em;
+            }
+            .post p {
+                font-size: 1em;
+            }
+        }
+        @media (max-width: 480px) {
+            .navbar a {
+                font-size: 0.9em;
+            }
+            h2 {
+                font-size: 1.6em;
+            }
+            #publicaciones {
+                padding: 10px;
+            }
+            #verVideoBtn {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div>
+            <a href="inicio.php">Inicio</a>
+            <a href="categoria T.php">Categoría</a>
+            <a href="redes.php">Redes</a>
+            <a href="ubicacion.php">Ubicación</a>
+            <a href="Lista.php">Próximamente</a>
+            <a href="trailers.php">Trailers</a>
+        </div>
+    </div>
+    <h2>Publicación oficial de Monte-Movie en Reddit</h2>
+    <div id="publicaciones" class="loading">Cargando publicaciones...</div>
+    <button id="verVideoBtn">Ver videos de Monte-Movie</button>
+    <div id="videos">
+        <iframe width="560" height="315" src="https://youtube.com/embed/M5pql_jdDN4" title="Promo" frameborder="0" allowfullscreen></iframe>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/H4vCSf4W-4Q" title="Promo" frameborder="0" allowfullscreen></iframe>
+        <iframe width="560" height="315" src="https://youtube.com/embed/AqA5uCAdpc4" title="Promo" frameborder="0" allowfullscreen></iframe>
+        <iframe width="560" height="315" src="https://youtube.com/embed/oSDMNqlC1vk" title="Promo" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <script>
+        const defaultUsername = "Aggravating-Art9307";
+        const API_KEY = "AIzaSyCWCJ9djOYNidBpC0jy6wIImgqZi3BZNuk"; 
+        const channelId = "UCkK3cZz0_o5o_m9bpOlrTxg"; 
+        async function obtenerPublicaciones(username) {
+            try {
+                const response = await fetch(`https://www.reddit.com/user/${username}/submitted.json`);
+                const data = await response.json();
+                if (data.data && data.data.children.length > 0) {
+                    let publicacionesHTML = '';
+                    data.data.children.forEach(post => {
+                        const title = post.data.title || "Sin título";
+                        const description = post.data.selftext || "Sin descripción.";
+                        const media = post.data.thumbnail && post.data.thumbnail.startsWith("http") 
+                            ? `<img src="${post.data.thumbnail}" alt="Imagen del post">` 
+                            : '';
+                        publicacionesHTML += `
+                            <div class="post">
+                                <h3><a href="https://www.reddit.com${post.data.permalink}" target="_blank">${title}</a></h3>
+                                ${media}
+                                <p>${description}</p>
+                            </div>
+                        `;
+                    });
+                    document.getElementById("publicaciones").innerHTML = publicacionesHTML;
+                } else {
+                    document.getElementById("publicaciones").innerHTML = "<p>No se encontraron resultados por parte de Monte-Movie.</p>";
+                }
+            } catch (error) {
+                console.error("Error al obtener las publicaciones:", error);
+                document.getElementById("publicaciones").innerHTML = "<p>Ocurrió un error al obtener las publicaciones.</p>";
+            }
+        }
+        async function cargarVideos() {
+            const videoList = document.getElementById("videos");
+            videoList.style.display = "block"; 
+        }
+        obtenerPublicaciones(defaultUsername);
+        document.getElementById('verVideoBtn').addEventListener('click', cargarVideos);
+    </script>
+</body>
+</html>

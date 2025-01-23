@@ -1,164 +1,109 @@
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Juego Táctil</title>
-  <style>
-    /* CSS */
-    body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #222;
-    }
-
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      background-color: #111;
-    }
-
-    #controls {
-      position: absolute;
-      bottom: 10%;
-      display: flex;
-      justify-content: space-evenly;
-      width: 100%;
-      z-index: 10;
-    }
-
-    .control-btn {
-      background-color: rgba(0, 0, 0, 0.5);
-      color: white;
-      border: none;
-      padding: 15px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .control-btn:hover {
-      background-color: rgba(0, 0, 0, 0.8);
-    }
-
-    @media (orientation: landscape) {
-      #controls {
-        flex-direction: row;
-        justify-content: space-between;
-        padding: 20px;
-      }
-
-      .control-btn {
-        font-size: 5vw;
-        width: 20vw;
-        height: 10vh;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - Monte-Movie</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            margin: 0;
+            padding-top: 60px;
+            text-align: center;
+            position: relative;
+            background: url('Inicio.gif') no-repeat center center fixed; 
+            background-size: cover; 
+            min-height: 100vh;
+            overflow-y: auto;
+        }
+        .navbar {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        .navbar .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #4a6572;
+            border-radius: 5px;
+        }
+        .navbar img {
+            height: 40px;
+            width: auto; 
+        }
+        .logo {
+            margin: 20px auto;
+            padding: 0;
+            background-color: transparent;
+            border-radius: 20px;
+            width: auto;
+            max-width: 250px; 
+        }
+        .logo img {
+            width: 100%;
+            height: auto; 
+            border-radius: 15px;
+        }
+        .logo h1 {
+            color: #fff; 
+            font-size: 2.5em;
+        }
+        .welcome-text {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: rgba(244, 249, 249, 0.8); 
+            color: #333;
+            font-size: 1.2em;
+            border: 2px solid #2d4059;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: bold;
+        }
+        @media (max-width: 768px) {
+            .navbar a { font-size: 14px; }
+            h1 { font-size: 1.8em; }
+            .welcome-text { font-size: 1em; padding: 15px; }
+        }
+    </style>
 </head>
 <body>
-  <canvas id="gameCanvas"></canvas>
-
-  <div id="controls">
-    <button id="moveLeft" class="control-btn">Izquierda</button>
-    <button id="moveRight" class="control-btn">Derecha</button>
-    <button id="jump" class="control-btn">Saltar</button>
-    <button id="shoot" class="control-btn">Disparar</button>
-  </div>
-
-  <script>
-    // JavaScript
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-
-    // Variables de jugador y controles
-    let player = { x: canvas.width / 2, y: canvas.height - 100, width: 50, height: 50 };
-    let movingLeft = false, movingRight = false, jumping = false, shooting = false;
-
-    // Actualizar el tamaño del canvas al redimensionarlo
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-
-    // Mover al jugador
-    function movePlayer() {
-      if (movingLeft && player.x > 0) {
-        player.x -= 5;
-      }
-      if (movingRight && player.x + player.width < canvas.width) {
-        player.x += 5;
-      }
-    }
-
-    // Disparar
-    function shoot() {
-      if (shooting) {
-        // Aquí se puede agregar la lógica para disparar
-        console.log('Disparando');
-      }
-    }
-
-    // Dibujar jugador
-    function drawPlayer() {
-      ctx.fillStyle = 'red';
-      ctx.fillRect(player.x, player.y, player.width, player.height);
-    }
-
-    // Detectar toques en la pantalla
-    function touchHandler(event) {
-      const touchX = event.changedTouches[0].clientX;
-      const touchY = event.changedTouches[0].clientY;
-
-      if (touchY > canvas.height * 0.7) {
-        if (touchX < canvas.width / 2) {
-          movingLeft = true;
-          movingRight = false;
-        } else {
-          movingRight = true;
-          movingLeft = false;
-        }
-      } else if (touchY < canvas.height * 0.3) {
-        jumping = true;
-        console.log('Saltar');
-      }
-
-      if (touchY > canvas.height * 0.8) {
-        shooting = true;
-      }
-    }
-
-    function touchEndHandler(event) {
-      movingLeft = false;
-      movingRight = false;
-      jumping = false;
-      shooting = false;
-    }
-
-    // Configurar eventos táctiles
-    canvas.addEventListener('touchstart', touchHandler);
-    canvas.addEventListener('touchend', touchEndHandler);
-
-    // Función de actualización del juego
-    function updateGame() {
-      movePlayer();
-      shoot();
-      ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpiar el canvas
-      drawPlayer(); // Dibujar al jugador
-      requestAnimationFrame(updateGame); // Llamar nuevamente a la función para mantener el juego en ejecución
-    }
-
-    // Redimensionar canvas al cambiar el tamaño de la ventana
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas(); // Inicializar el tamaño del canvas
-
-    updateGame(); // Iniciar el juego
-  </script>
+    <div class="navbar">
+        <div class="nav-links">
+            <a href="inicio.php">Inicio</a>
+            <a href="categoria T.php">Categoría</a>
+            <a href="redes.php">Redes</a>
+            <a href="ubicacion.php">Ubicación</a>
+            <a href="Lista.php">Próximamente</a>
+            <a href="trailers.php">Trailers</a>
+        </div>
+    </div>
+    <div class="logo">
+        <img src="LogoMM.jpg" alt="Logo Monte-Movies">
+        <h1>Bienvenido a Monte-Movie</h1>
+    </div>
+    <div class="welcome-text">
+        Querido usuario necesitamos que tenga en mente que solo es una página inicial. Tenga en cuenta que si no le gusta el contenido, nos lo puede comentar en nuestro canal de YouTube como Monte-Movie. ¡Gracias y disfrute!
+    </div>
 </body>
 </html>
