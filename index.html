@@ -1,0 +1,109 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - Monte-Movie</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            margin: 0;
+            padding-top: 60px;
+            text-align: center;
+            position: relative;
+            background: url('Inicio.gif') no-repeat center center fixed; 
+            background-size: cover; 
+            min-height: 100vh;
+            overflow-y: auto;
+        }
+        .navbar {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        .navbar .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #4a6572;
+            border-radius: 5px;
+        }
+        .navbar img {
+            height: 40px;
+            width: auto; 
+        }
+        .logo {
+            margin: 20px auto;
+            padding: 0;
+            background-color: transparent;
+            border-radius: 20px;
+            width: auto;
+            max-width: 250px; 
+        }
+        .logo img {
+            width: 100%;
+            height: auto; 
+            border-radius: 15px;
+        }
+        .logo h1 {
+            color: #fff; 
+            font-size: 2.5em;
+        }
+        .welcome-text {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: rgba(244, 249, 249, 0.8); 
+            color: #333;
+            font-size: 1.2em;
+            border: 2px solid #2d4059;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: bold;
+        }
+        @media (max-width: 768px) {
+            .navbar a { font-size: 14px; }
+            h1 { font-size: 1.8em; }
+            .welcome-text { font-size: 1em; padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="nav-links">
+            <a href="inicio.php">Inicio</a>
+            <a href="categoria T.php">Categoría</a>
+            <a href="redes.php">Redes</a>
+            <a href="ubicacion.php">Ubicación</a>
+            <a href="Lista.php">Próximamente</a>
+            <a href="trailers.php">Trailers</a>
+        </div>
+    </div>
+    <div class="logo">
+        <img src="LogoMM.jpg" alt="Logo Monte-Movies">
+        <h1>Bienvenido a Monte-Movie</h1>
+    </div>
+    <div class="welcome-text">
+        Querido usuario necesitamos que tenga en mente que solo es una página inicial. Tenga en cuenta que si no le gusta el contenido, nos lo puede comentar en nuestro canal de YouTube como Monte-Movie. ¡Gracias y disfrute!
+    </div>
+</body>
+</html>

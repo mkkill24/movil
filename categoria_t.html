@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Categoría T - Monte-Movies</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            height: 100%;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            margin: 0;
+            padding-top: 60px;
+            text-align: center;
+        }
+        body {
+            background: url('fc.jpg') no-repeat center center fixed;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        .star-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        .navbar {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 20px;
+            z-index: 10;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .navbar a:hover {
+            background-color: #4a6572;
+            border-radius: 5px;
+        }
+        .navbar-center {
+            display: flex;
+            gap: 10px;
+        }
+        .buttons-container {
+            margin-top: 120px;
+        }
+        .category-button {
+            background-color: #2d4059;
+            color: white;
+            padding: 15px 30px;
+            margin: 10px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        .category-button:hover {
+            background-color: #1f2d3b;
+        }
+        .info-box {
+            display: none;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            font-size: 18px;
+        }
+        .info-box h3 {
+            margin: 0 0 10px;
+        }
+        .video-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        iframe {
+            width: 560px;
+            height: 315px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .video-wrapper {
+            text-align: center;
+        }
+        .video-wrapper a {
+            color: #fff;
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+            text-decoration: none;
+        }
+        .video-wrapper a:hover {
+            color: #ff9800;
+        }
+        @media (max-width: 768px) {
+            iframe {
+                width: 100%;
+                height: 200px;
+            }
+            .video-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .buttons-container {
+                margin-top: 80px;
+            }
+        }
+        @media (max-width: 480px) {
+            iframe {
+                width: 100%;
+                height: 200px;
+            }
+            .buttons-container {
+                margin-top: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="star-background"></div>
+    <div class="navbar">
+        <div class="navbar-center">
+            <a href="inicio.php">Inicio</a>
+            <a href="categoria T.php">Categoría</a>
+            <a href="redes.php">Redes</a>
+            <a href="ubicacion.php">Ubicación</a>
+            <a href="Lista.php">Próximamente</a>
+            <a href="trailers.php">Trailers</a>
+        </div>
+    </div>
+    <h1>Categorías de Películas</h1>
+    <div class="buttons-container">
+        <button class="category-button" onclick="showInfo('accion')">Acción</button>
+        <button class="category-button" onclick="showInfo('terror')">Terror</button>
+        <button class="category-button" onclick="showInfo('drama')">Drama</button>
+        <button class="category-button" onclick="showInfo('animacion')">Animación</button>
+        <button class="category-button" onclick="showInfo('romance')">Romance</button>
+    </div>
+    <div id="accion" class="info-box">
+        <h3>Películas de Acción</h3>
+        <p>Disfruta de estas increíbles películas de acción completas.</p>
+        <div class="video-container">
+            <div class="video-wrapper">
+            <iframe src="https://youtube.com/embed/IuDUkiZPz30" allowfullscreen></iframe>
+            <iframe src="https://youtube.com/embed/jRUhIsLDMC8" allowfullscreen></iframe>
+            <iframe src="https://youtube.com/embed/UJhFYo_umH8" allowfullscreen></iframe>
+            <iframe src="https://youtube.com/embed/LoAyHSowEjM" allowfullscreen></iframe>
+            <iframe src="https://youtube.com/embed/BATmZGfWO_Q" allowfullscreen></iframe>
+            <iframe src="https://youtube.com/embed/4OgHMJzFLF0" allowfullscreen></iframe>
+            <iframe src="https://youtube.com/embed/ZG6yG8PTmfY" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <div id="terror" class="info-box">
+        <h3>Cortos de Terror</h3>
+        <p>Disfruta de estos aterradores cortometrajes de terror.</p>
+        <div class="video-container">
+            <div class="video-wrapper">
+                <iframe src="https://youtube.com/embed/MpYGQVPzEZI" allowfullscreen></iframe>
+                <iframe src="https://youtube.com/embed/TGZg1YqXv9o" allowfullscreen></iframe>
+                <iframe src="https://youtube.com/embed/Gulu-76-Vg4" allowfullscreen></iframe>
+                <iframe src="https://youtube.com/embed/fCwb7KkEx58" allowfullscreen></iframe>
+                <iframe src="https://youtube.com/embed/2ul2vOA39cU" allowfullscreen></iframe>
+            </div>
+            <div class="video-wrapper">
+            </div>
+        </div>
+    </div>
+    <div id="drama" class="info-box">
+        <h3>Películas de Drama</h3>
+        <p>Disfruta de estos conmovedores y dramáticos cortos de cine.</p>
+        <div class="video-container">
+            <div class="video-wrapper">
+                <iframe src="https://youtube.com/embed/0MlztKl2TUw" allowfullscreen></iframe>
+                <iframe src="https://youtube.com/embed/zIOzr2Y4Gxs" allowfullscreen></iframe>
+                <iframe src="https://youtube.com/embed/4RCqJhYPyo4" allowfullscreen></iframe>
+                <iframe src="https://youtube.com/embed/N9i6pwqdNv8" allowfullscreen></iframe>
+                <iframe src="https://youtube.com/embed/232SsE61OQI" allowfullscreen></iframe>
+            </div>
+            <div class="video-wrapper">
+            </div>
+        </div>
+    </div>
+    <div id="animacion" class="info-box">
+        <h3>Películas Animadas</h3>
+        <p>Disfruta de las mejores películas animadas.</p>
+        <div class="video-container">
+            <div class="video-wrapper">
+                <iframe src="https://youtube.com/embed/qtsde0Fodtc" allowfullscreen></iframe>
+                <iframe src="https://youtube.com/embed/R9UfrAG2pIs" allowfullscreen></iframe>
+                <iframe src="https://youtube.com/embed/5WWFJtGDFcM" allowfullscreen></iframe>
+                <iframe src="https://youtube.com/embed/eDyCWDAKmIw" allowfullscreen></iframe>
+                <iframe src="https://youtube.com/embed/TUTB396C1lk" allowfullscreen></iframe>
+            </div>
+            <div class="video-wrapper">
+            </div>
+        </div>
+    </div>
+    <div id="romance" class="info-box">
+        <h3>Películas de Romance</h3>
+        <p>Disfruta de estos emocionantes cortometrajes románticos.</p>
+        <div class="video-container">
+            <div class="video-wrapper">
+            <iframe src="https://youtube.com/embed/BCcTw3F4huY" allowfullscreen></iframe>
+            <iframe src="https://youtube.com/embed/FQTOrfjbx_Q" allowfullscreen></iframe>
+            <iframe src="https://youtube.com/embed/GYD0gdtCX0c" allowfullscreen></iframe>
+            </div>
+            <div class="video-wrapper">
+            </div>
+        </div>
+    </div>
+    <script>
+        function showInfo(category) {
+            var boxes = document.querySelectorAll('.info-box');
+            boxes.forEach(function(box) {
+                box.style.display = 'none';
+            });
+
+            var categoryBox = document.getElementById(category);
+            categoryBox.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
